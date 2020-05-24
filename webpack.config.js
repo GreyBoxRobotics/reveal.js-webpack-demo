@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   devtool : "eval-cheap-module-source-map",
@@ -8,7 +9,7 @@ module.exports = {
     index : path.resolve(__dirname, 'src', 'index.js'),
   },
   output : {
-    filename : '[name].bundle.js',
+    filename : '[name].js',
     path : path.resolve(__dirname, 'public', 'dist'),
     publicPath : "/dist/",
     pathinfo : true,
@@ -21,34 +22,46 @@ module.exports = {
     symlinks : false,
   },
   module : {
-    strictExportPresence : true,
     rules : [
       {
         test : /\.js$/,
         exclude : /node_modules/,
-        use : {loader : 'babel-loader?cacheDirectory'}
+        use : {loader : 'babel-loader'}
       },
       {
-        test : /\.less$/,
+        test : /\.(sa|sc|c)ss$/,
         use : [
+          MiniCssExtractPlugin.loader,
           {
-            loader : 'style-loader',
-            // options: {singleton: true},
+            loader : "css-loader",
+            // options: {
+            //   modules: true,
+            //   sourceMap: true,
+            //   importLoader: 2
+            // }
           },
-          {
-            loader : 'css-loader',
-            options : {sourceMap : true},
-          },
-          {
-            loader : 'less-loader',
-            options : {sourceMap : true},
+          'sass-loader',
+        ],
+      },
+      {
+        test : /(eot|woff|woff2|ttf|svg)(\?\S*)?$/,
+        use : [ {
+          loader : 'file-loader',
+          options : {
+            name : '[name].[ext]',
+            publicPath : '../webfonts/',
+            outputPath : 'lib/webfonts/',
+            emitFile : true
           }
+        } ]
+      },
 
-        ]
-      }
     ]
   },
-  plugins : [ new CleanWebpackPlugin() ],
+  plugins : [
+    new CleanWebpackPlugin(),
+    new MiniCssExtractPlugin({filename : '[name].css'}),
+  ],
   devServer : {
     contentBase : path.resolve(__dirname, 'public'),
     hot : true,
@@ -66,4 +79,3 @@ if (process.env.NODE_ENV === "production") {
   // webpack.HotModuleReplacementPlugin()); module.exports.output.globalObject =
   // "this";
 }
-
