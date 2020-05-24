@@ -30,8 +30,7 @@ module.exports = {
         terserOptions : {
           compress : {
               // // see https://github.com/FortAwesome/Font-Awesome/
-              // // and https://github.com/fabiosantoscode/terser/issues/50
-              // collapse_vars: true,
+              collapse_vars: true,
           },
           output : null,
         },
