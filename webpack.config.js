@@ -1,7 +1,9 @@
 const path = require("path");
 const webpack = require("webpack");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 
 module.exports = {
   devtool : "eval-cheap-module-source-map",
@@ -21,6 +23,24 @@ module.exports = {
     extensions : [ '.js' ],
     symlinks : false,
   },
+
+  optimization : {
+    minimizer : [
+      new TerserPlugin({
+        terserOptions : {
+          compress : {
+              // // see https://github.com/FortAwesome/Font-Awesome/
+              // // and https://github.com/fabiosantoscode/terser/issues/50
+              // collapse_vars: true,
+          },
+          output : null,
+        },
+        sourceMap : false
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
+  },
+
   module : {
     rules : [
       {
