@@ -1,5 +1,5 @@
 {
-  "name": "reveal-presentation",
+  "name": "reveal.js-webpack-demo",
   "private": true,
   "version": "0.1.0",
   "description": "",
@@ -9,7 +9,7 @@
     "start": "DEV_SERVER=true webpack-dev-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["reveal.js", "webpack"],
   "author": "Arpit Aggarwal <ar13pit@gmail.com> (https://ar13pit.com/)",
   "license": "ISC",
   "devDependencies": {
